@@ -8,7 +8,7 @@ export async function POST(req: Request) {
     const { messages } = await req.json();
 
     const result = await streamText({
-      model: google("gemini-2.0-flash-exp"),
+      model: geminiModel,
       system: `You are an expert full-stack developer specializing in React, TypeScript, Tailwind CSS, and Vite.
 You help users build, modify, and understand web applications.
 Provide clear, actionable code examples and explanations.
@@ -19,7 +19,7 @@ Be concise but thorough in your explanations.`,
       temperature: 0.7,
     });
 
-    return result.toDataStreamResponse();
+    return result.toTextStreamResponse();
   } catch (error) {
     console.error("Chat API error:", error);
     return new Response(

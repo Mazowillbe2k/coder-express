@@ -54,16 +54,11 @@ Return the response as a JSON object with this structure:
   "description": "brief description of what was generated"
 }`;
 
-    const googleAI = google({
-      apiKey: process.env.GOOGLE_GENERATIVE_AI_API_KEY,
-    });
-
     const result = await generateText({
-      model: googleAI("gemini-2.0-flash-exp"),
+      model: geminiModel,
       system: systemPrompt,
       prompt: `Project Name: ${name}\n\nDescription: ${description}`,
       temperature: 0.8,
-      maxTokens: 8000,
     });
 
     // Parse the AI response to extract JSON

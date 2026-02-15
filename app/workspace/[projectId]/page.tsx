@@ -22,10 +22,10 @@ import {
   Terminal,
   Layout,
 } from "lucide-react";
-import { useChat } from "ai/react";
+import { useChat } from "@ai-sdk/react";
 import ReactMarkdown from "react-markdown";
 
-const defaultFiles = {
+const defaultFiles: Record<string, string> = {
   "App.tsx": `import { useState } from "react";
 
 export default function App() {
@@ -114,7 +114,7 @@ createRoot(document.getElementById("root")!).render(
 export default function WorkspacePage() {
   const params = useParams();
   const [activeFile, setActiveFile] = useState("App.tsx");
-  const [files, setFiles] = useState(defaultFiles);
+  const [files, setFiles] = useState<Record<string, string>>(defaultFiles);
   const [isPreviewRunning, setIsPreviewRunning] = useState(false);
   const [previewUrl, setPreviewUrl] = useState("");
 

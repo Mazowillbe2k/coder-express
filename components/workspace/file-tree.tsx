@@ -213,9 +213,9 @@ function TreeNode({
 }
 
 function buildFileTree(filePaths: string[]): FileNode[] {
-  const tree: FileNode[] = {};
+  const tree: FileNode[] = [];
 
-  for (const path of filePathPaths) {
+  for (const path of filePaths) {
     const parts = path.split("/");
     let current = tree;
 

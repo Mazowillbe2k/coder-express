@@ -1,9 +1,8 @@
 import { google } from "@ai-sdk/google";
 import { generateText, streamText } from "ai";
 
-const googleAI = google({
-  apiKey: process.env.GOOGLE_GENERATIVE_AI_API_KEY,
-});
+// Type assertion for the Gemini model
+const geminiModel = geminiModel as any;
 
 export async function generateCode(
   prompt: string,
@@ -33,13 +32,12 @@ ${context?.framework ? `Framework: ${context.framework}` : ""}`;
 
   try {
     const result = await generateText({
-      model: googleAI("gemini-2.0-flash-exp"),
+      model: geminiModel,
       system: systemPrompt,
       prompt: context?.existingCode
         ? `${prompt}\n\nExisting code context:\n\`\`\`\n${context.existingCode}\n\`\`\``
         : prompt,
       temperature: 0.7,
-      maxTokens: 4000,
     });
 
     return result.text;
@@ -67,7 +65,7 @@ ${context?.framework ? `Framework: ${context.framework}` : ""}`;
 
   try {
     const result = await streamText({
-      model: googleAI("gemini-2.0-flash-exp"),
+      model: geminiModel,
       system: systemPrompt,
       prompt: context?.existingCode
         ? `${prompt}\n\nExisting code context:\n\`\`\`\n${context.existingCode}\n\`\`\``
@@ -75,7 +73,7 @@ ${context?.framework ? `Framework: ${context.framework}` : ""}`;
       temperature: 0.7,
     });
 
-    return result.toDataStreamResponse();
+    return result.toTextStreamResponse();
   } catch (error) {
     console.error("Error streaming response:", error);
     throw new Error("Failed to get AI response. Please try again.");
@@ -101,11 +99,10 @@ Be concise and specific in your analysis.`;
 
   try {
     const result = await generateText({
-      model: googleAI("gemini-2.0-flash-exp"),
+      model: geminiModel,
       system: systemPrompt,
       prompt: `Analyze this project:\n\n${fileContents}`,
       temperature: 0.3,
-      maxTokens: 2000,
     });
 
     return result.text;
@@ -131,11 +128,10 @@ Only return the refactored code, no explanations.`;
 
   try {
     const result = await generateText({
-      model: googleAI("gemini-2.0-flash-exp"),
+      model: geminiModel,
       system: systemPrompt,
       prompt: `Refactor this code (${filePath}):\n${instructions}\n\n\`\`\`\n${code}\n\`\`\``,
       temperature: 0.5,
-      maxTokens: 4000,
     });
 
     return result.text;
@@ -168,11 +164,10 @@ Return the response as a JSON object with this structure:
 
   try {
     const result = await generateText({
-      model: googleAI("gemini-2.0-flash-exp"),
+      model: geminiModel,
       system: systemPrompt,
       prompt: `Template: ${template}\n\nDescription: ${description}\n\nGenerate the complete application.`,
       temperature: 0.8,
-      maxTokens: 8000,
     });
 
     return result.text;
